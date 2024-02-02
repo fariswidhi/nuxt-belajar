@@ -1,64 +1,43 @@
-<script >
-import { getSuppliers } from '../services/supplier';
+
+<script setup lang="ts">
+
+const { status, data, signIn, signOut, refresh   } = useAuth()
+
+  // const [status,sign, loading] = useSession()
 
 
-
-export default {
-    data(){
-        return {
-            suppliers:[]
-        }
-    },
-    created(){
-        this.fetchSupplier()
-    },
-    methods:{
-        fetchSupplier(){
-            getSuppliers()
-                .then(response=>{
-                    this.suppliers = response.data.suppliers
-                })
-                .catch(error=>{
-                    return error
-                })
-        }
-    }
-}
+  
+  const loggedIn = computed(() => status.value==='authenticated')
 
 
+  async function handleSignIn() {
+    await signIn()
+  }
+  async function handleSignOut() {
+    await signOut()
+  }
 </script>
 
 
-
 <template>
-    <div>
-        <div class="container">
-            <NuxtLink to="/create" class="btn btn-primary">Tambah</NuxtLink>
+    <nav class="navbar navbar-light bg-light">
+    <div class="container-fluid">
+      <NuxtLink to="/" class="navbar-brand">Home</NuxtLink>
+      <span v-if="loggedIn">{{ data.user.name }}</span>
 
-            <table class="table table-striped">
-                <thead>
-                    <th>Kode</th>
-                    <th>Nama</th>
-                    <th>Alamat</th>
-                    <th>Nohp</th>
-                    <th>email</th>
-                    <th>rekening</th>
-                </thead>
-
-                <tbody>
-                    <tr v-for="supplier in suppliers" key="supplier.id">
-                        <td>{{ supplier.kode }}</td>
-                        <td>{{ supplier.nama }}</td>
-                        <td>{{ supplier.alamat }}</td>
-                        <td>{{ supplier.nohp }}</td>
-                        <td>{{ supplier.email }}</td>
-                        <td>{{ supplier.rekening }}</td>
-                        <td><button class="btn btn-danger">HAPUS</button></td>
-
-                    </tr>
-                </tbody>
-            </table>
-        
-        </div>
     </div>
+  </nav>
+
+
+  <div class="container mt-4">
+      <h1>CRUD</h1>
+      
+      <button v-if="loggedIn" @click="handleSignOut">Sign Out</button>
+      <button v-else @click="handleSignIn">Sign Inn</button>
+
+
+
+
+  </div>
+
 </template>

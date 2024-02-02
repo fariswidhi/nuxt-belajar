@@ -1,43 +1,11 @@
-
 <script setup lang="ts">
-  const { status, signIn, signOut } =  useAuth();
-
-  // const [status,sign, loading] = useSession()
-
-
-  const loggedIn = computed(() => status.value==='authenticated')
-
-
-  async function handleSignIn() {
-    await signIn()
-  }
-  async function handleSignOut() {
-    await signOut()
-  }
+const { status } = useAuth()
+const loggedIn = computed(() => status.value === 'authenticated')
 </script>
 
 <template>
   <div>
-
-    <nav class="navbar navbar-light bg-light">
-      <div class="container-fluid">
-        <NuxtLink to="/" class="navbar-brand">Home</NuxtLink>
-
-      </div>
-    </nav>
-
-
-    <div class="container mt-4">
-        <h1>CRUD</h1>
-        
-        <button v-if="loggedIn" @click="handleSignOut">Sign Out</button>
-        <button v-else @click="handleSignIn">Sign Inn</button>
-        <NuxtPage />
-
-
-
-
-    </div>
-
+    <NuxtPage />
+    
   </div>
 </template>
